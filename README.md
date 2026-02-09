@@ -161,10 +161,24 @@ npm run preview
 - Kontrolki ilości (+ / -) dla każdego produktu
 - Licznik produktów w koszyku w nagłówku
 - Możliwość dodania wielu sztuk jednego produktu
+- Dla każdego produktu w koszyku dwa przyciski:
+  - "Usuń 1 szt." - usuwa jedną sztukę produktu
+  - "Usuń wszystkie" - usuwa wszystkie sztuki wybranego produktu naraz
+- Podsumowanie ceny całkowitej
+- Przyciski akcji na dole koszyka:
+  - "Przejdź do kasy" - finalizuje zakup
+  - "Opróżnij koszyk" - usuwa wszystkie produkty z potwierdzeniem
+  - "Kontynuuj zakupy" - powrót do produktów
+- Grubsze obramowanie przycisków akcji (2px)
+- Spersonalizowane kolory przycisków (szary zamiast kolorowych)
 
 ### 6. Nawigacja
 - Przełączanie między stronami (Wszystkie Produkty / Ulubione)
 - Sticky navigation (pozostaje na górze)
+- Pasek wyszukiwania zintegrowany z nawigacją
+- Przycisk do koszyka ze:
+  - Symbolem koszyka 🛒
+  - Licznikiem produktów w koszyku
 - Przycisk Wyloguj z funkcjonalnością
 
 ## 🧩 Komponenty
@@ -210,6 +224,25 @@ Funkcjonalności:
 - Komunikat gdy brak ulubionych
 ```
 
+### CartPage.jsx
+Strona wyświetlająca zawartość koszyka
+```jsx
+Props:
+- username, onLogout
+- cart, setCart
+- currentPage, setCurrentPage
+
+Funkcjonalności:
+- Wyświetlanie produktów w koszyku z podsumowaniem ilości i ceny
+- Usuwanie pojedynczych sztuk produktu ("Usuń 1 szt.")
+- Usuwanie wszystkich sztuk produktu naraz ("Usuń wszystkie")
+- Podsumowanie ceny całkowitej
+- Finalizacja zakupu (Przejdź do kasy)
+- Czyszczenie całego koszyka
+- Powrót do produktów
+- Komunikat gdy koszyk jest pusty
+```
+
 ## 💾 Stany (State Management)
 
 ### Główne stany (App.jsx)
@@ -242,6 +275,14 @@ import { products } from '../products.js'
 - Responsywny design z CSS Grid
 - Efekty hover na kartach i przyciskach
 - Sticky navigation bar
+
+### Elementy UI w Koszyku
+- **Przyciski akcji**: Grubsze obramowanie (2px solid #999)
+- **Przycisk do koszyka**: Symbol 🛒 ze wskaźnikiem liczby produktów
+- **Przyciski usuwania**: Dwa warianty:
+  - Usuwanie pojedynczych sztuk (Usuń 1 szt.)
+  - Usuwanie wszystkich sztuk (Usuń wszystkie)
+- **Kolory przycisków**: Szary `#d0d0d0` zamiast domyślnie kolorowych
 
 ## 📱 Responsywność
 
