@@ -1,6 +1,6 @@
 import { products } from '../products.js'
 
-export function ProductsPage({ username, onLogout, favorites, setFavorites, cart, setCart, quantities, setQuantities, searchQuery, setSearchQuery }) {
+export function ProductsPage({ username, onLogout, favorites, setFavorites, cart, setCart, quantities, setQuantities, searchQuery, setSearchQuery, minPrice, setMinPrice, maxPrice, setMaxPrice }) {
   const getQuantity = (productId) => {
     return quantities[productId] || 1
   }
@@ -59,12 +59,53 @@ export function ProductsPage({ username, onLogout, favorites, setFavorites, cart
       
       <div className="products-container">
         <h2>Dostępne Produkty</h2>
+        
+        <div className="filter-section">
+          <h3>Filtry</h3>
+          <div className="filter-group">
+            <label>
+              Cena od:
+              <input 
+                type="number" 
+                value={minPrice} 
+                onChange={(e) => setMinPrice(parseInt(e.target.value) || 0)}
+                placeholder="Cena min"
+              />
+            </label>
+            <label>
+              do:
+              <input 
+                type="number" 
+                value={maxPrice} 
+                onChange={(e) => setMaxPrice(parseInt(e.target.value) || 10000)}
+                placeholder="Cena max"
+              />
+            </label>
+            <button 
+              className="reset-filters-btn"
+              onClick={() => {
+                setMinPrice(0)
+                setMaxPrice(10000)
+                setSearchQuery('')
+              }}
+            >
+              Resetuj filtry
+            </button>
+          </div>
+        </div>
+
         <div className="products-grid">
           {products
             .filter(product => {
-              if (!searchQuery) return true
-              const q = searchQuery.toLowerCase()
-              return product.name.toLowerCase().includes(q) || product.description.toLowerCase().includes(q)
+              if (!searchQuery && minPrice === 0 && maxPrice === 10000) return true
+              
+              const matchesSearch = !searchQuery || 
+                product.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                product.description.toLowerCase().includes(searchQuery.toLowerCase())
+              
+              const matchesPrice = product.price >= minPrice && product.price <= maxPrice
+              
+              return matchesSearch && matchesPrice
             })
             .map(product => (
             <div key={product.id} className="product-card">
