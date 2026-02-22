@@ -79,7 +79,8 @@ App/
 │   └── components/
 │       ├── RegistrationForm.jsx   # Formularz rejestracji z walidacją hasła
 │       ├── ProductsPage.jsx       # Strona wszystkich produktów
-│       └── FavoritesPage.jsx      # Strona ulubionych produktów
+│       ├── FavoritesPage.jsx      # Strona ulubionych produktów
+│       └── CartPage.jsx           # Strona koszyka z podsumowaniem zamówienia
 ├── public/                     # Pliki statyczne
 ├── package.json                # Definicja zależności
 ├── package-lock.json           # Zablokowane wersje pakietów
