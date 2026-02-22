@@ -7,6 +7,7 @@ export function RegistrationForm({ onRegister }) {
     password: ''
   })
   const [error, setError] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
 
   const validatePassword = (password) => {
     if (password.length < 8) {
@@ -83,16 +84,30 @@ export function RegistrationForm({ onRegister }) {
 
         <div className="form-group">
           <label htmlFor="password">Hasło:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Wpisz hasło"
-            required
-            className={error ? 'error' : ''}
-          />
+          <div className="password-input-wrapper">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Wpisz hasło"
+              required
+              className={error ? 'error' : ''}
+            />
+            <div className="password-toggle">
+              <label htmlFor="showPassword" className="show-password-label">
+                <input
+                  type="checkbox"
+                  id="showPassword"
+                  checked={showPassword}
+                  onChange={(e) => setShowPassword(e.target.checked)}
+                  className="show-password-checkbox"
+                />
+                <span className="toggle-text">Pokaż hasło</span>
+              </label>
+            </div>
+          </div>
           <div className="password-requirements">
             <p className="requirements-title">Wymagania dotyczące hasła:</p>
             <ul>
