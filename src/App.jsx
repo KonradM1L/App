@@ -3,12 +3,15 @@ import './App.css'
 import { RegistrationForm } from './components/RegistrationForm'
 import { ProductsPage } from './components/ProductsPage'
 import { FavoritesPage } from './components/FavoritesPage'
+import { CartPage } from './components/CartPage'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [username, setUsername] = useState('')
   const [currentPage, setCurrentPage] = useState('products')
   const [searchQuery, setSearchQuery] = useState('')
+  const [minPrice, setMinPrice] = useState(0)
+  const [maxPrice, setMaxPrice] = useState(10000)
   const [cart, setCart] = useState([])
   const [quantities, setQuantities] = useState({})
   const [favorites, setFavorites] = useState(new Set())
@@ -48,7 +51,13 @@ function App() {
               className={`nav-btn ${currentPage === 'favorites' ? 'active' : ''}`}
               onClick={() => setCurrentPage('favorites')}
             >
-              Ulubione ({favorites.size})
+              ★ Ulubione ({favorites.size})
+            </button>
+            <button 
+              className={`nav-btn ${currentPage === 'cart' ? 'active' : ''}`}
+              onClick={() => setCurrentPage('cart')}
+            >
+              🛒 Koszyk ({cart.length})
             </button>
           </nav>
           {currentPage === 'products' ? (
@@ -63,8 +72,12 @@ function App() {
               setQuantities={setQuantities}
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
+              minPrice={minPrice}
+              setMinPrice={setMinPrice}
+              maxPrice={maxPrice}
+              setMaxPrice={setMaxPrice}
             />
-          ) : (
+          ) : currentPage === 'favorites' ? (
             <FavoritesPage 
               username={username} 
               onLogout={handleLogout}
@@ -76,6 +89,19 @@ function App() {
               setQuantities={setQuantities}
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
+              minPrice={minPrice}
+              setMinPrice={setMinPrice}
+              maxPrice={maxPrice}
+              setMaxPrice={setMaxPrice}
+            />
+          ) : (
+            <CartPage 
+              username={username} 
+              onLogout={handleLogout}
+              cart={cart}
+              setCart={setCart}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
             />
           )}
         </>
