@@ -1,6 +1,9 @@
-import { products } from '../products.js'
+import { useState } from 'react'
+import { products, sortProducts } from '../products.js'
 
 export function ProductsPage({ username, onLogout, favorites, setFavorites, cart, setCart, quantities, setQuantities, searchQuery, setSearchQuery, minPrice, setMinPrice, maxPrice, setMaxPrice }) {
+  const [sortBy, setSortBy] = useState('name')
+  const [sortOrder, setSortOrder] = useState('asc')
   const getQuantity = (productId) => {
     return quantities[productId] || 1
   }
@@ -61,7 +64,7 @@ export function ProductsPage({ username, onLogout, favorites, setFavorites, cart
         <h2>Dostępne Produkty</h2>
         
         <div className="filter-section">
-          <h3>Filtry</h3>
+          <h3>Filtry i Sortowanie</h3>
           <div className="filter-group">
             <label>
               Cena od:
@@ -81,22 +84,41 @@ export function ProductsPage({ username, onLogout, favorites, setFavorites, cart
                 placeholder="Cena max"
               />
             </label>
-            <button 
-              className="reset-filters-btn"
-              onClick={() => {
-                setMinPrice(0)
-                setMaxPrice(10000)
-                setSearchQuery('')
-              }}
-            >
-              Resetuj filtry
-            </button>
           </div>
+          <div className="filter-group">
+            <label>
+              Sortuj po:
+              <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                <option value="name">Nazwa</option>
+                <option value="price">Cena</option>
+                <option value="category">Kategoria</option>
+              </select>
+            </label>
+            <label>
+              Kolejność:
+              <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
+                <option value="asc">Rosnąco</option>
+                <option value="desc">Malejąco</option>
+              </select>
+            </label>
+          </div>
+          <button 
+            className="reset-filters-btn"
+            onClick={() => {
+              setMinPrice(0)
+              setMaxPrice(10000)
+              setSearchQuery('')
+              setSortBy('name')
+              setSortOrder('asc')
+            }}
+          >
+            Resetuj filtry
+          </button>
         </div>
 
         <div className="products-grid">
-          {products
-            .filter(product => {
+          {sortProducts(
+            products.filter(product => {
               if (!searchQuery && minPrice === 0 && maxPrice === 10000) return true
               
               const matchesSearch = !searchQuery || 
@@ -106,8 +128,10 @@ export function ProductsPage({ username, onLogout, favorites, setFavorites, cart
               const matchesPrice = product.price >= minPrice && product.price <= maxPrice
               
               return matchesSearch && matchesPrice
-            })
-            .map(product => (
+            }),
+            sortBy,
+            sortOrder
+          ).map(product => (
             <div key={product.id} className="product-card">
               <button
                 className={`favorite-btn ${favorites.has(product.id) ? 'active' : ''}`}
